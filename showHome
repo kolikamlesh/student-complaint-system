@@ -1,0 +1,86 @@
+#!/bin/bash
+
+unset choice
+
+list(){
+
+	i=0
+	echo
+	echo
+	for file in $HOME/project/db2/1/* ;
+	do
+		i=$(($i+1))
+		query=$(cat $file/1)
+		echo -n "$i) $query"
+		echo
+	done
+	echo
+	echo "[ press enter go back .. ]"
+
+	explore
+
+}
+
+explore(){
+
+	echo
+	echo
+	read -p "choice :: " choice
+	blank choice 
+
+	i=0
+	for file in $HOME/project/db2/1/* ;
+	do
+		i=$(($i+1))
+		if [[ $i == $choice ]];
+		then
+
+			i=$(($i+1))
+			query=$(cat $file/1)
+			solved=$(wc -l $file/2 | awk '{print $1}')
+			notSolved=$(wc -l $file/3 | awk '{print $1}')
+			user=$(cat $file/4)
+
+			solvedUser=$(cat $file/2)
+			notSolvedUser=$(cat $file/3)
+
+			unset extraData
+			extraData=$(cat $file/5 2> /dev/null)
+
+			echo "__________________________________________________"
+			echo "[ $query ]"
+			echo "__________________________________________________"
+			echo
+			echo "UPVOTE :: $solved           		DOWNVOTE :: $notSolved"
+			echo
+			echo "____________________ RAISED BY ___________________"
+			echo $user
+			echo
+			echo "___________________ SOLVED FOR ___________________"
+			echo $solvedUser
+			echo
+			echo "_________________ NOT SOLVED FOR _________________"
+			echo $notSolvedUser
+			echo 
+			echo "__________________________________________________"
+			echo
+			echo $extraData 
+
+			echo
+			echo
+			read -p "[ press enter go back .. ]" stop
+			list
+		fi
+	done
+		
+}
+
+blank() {
+
+  if [ -z $1 ];
+   then
+   	exit
+  fi
+}
+
+list

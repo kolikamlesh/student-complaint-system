@@ -1,0 +1,43 @@
+#!/bin/bash
+
+floor(){
+	read -p "Enter floor no [0-6] :: " floor_no
+	blank floor_no floor
+
+	if [[ $floor_no -lt 0 ]] || [[ $floor_no -gt 6 ]]
+	then
+		floor
+	fi
+
+}
+
+block(){
+	read -p "Enter block [A-E] :: " block_no
+	blank block_no block
+
+	block_no=${block_no^^}
+	if [[ $block_no != 'E' ]] && [[ $block_no != 'D' ]] && [[ $block_no != 'C' ]] && [[ $block_no != 'B' ]] && [[ $block_no != 'A' ]]
+	then
+		block
+	fi
+
+	room_no_=$block_no
+}
+
+blank(){
+
+	if [ -z $1 ];
+	then
+		$2
+	fi
+}
+
+floor
+block
+
+echo $1 > .temp
+
+hash=$(md5sum .temp | cut -c 1-4)
+
+echo "BLOCK :: $block_no :: FLOOR $floor_no" >> $HOME/project/db2/1/$hash/5 
+$HOME/project/remove_dup $HOME/project/db2/1/$hash/5

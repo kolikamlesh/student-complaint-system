@@ -1,0 +1,13 @@
+#!/bin/bash
+
+check=$(ping -c 1 www.google.com 2> /dev/null)
+
+size=${#check}
+
+if [[ $size -lt 20 ]];
+then
+	echo -n "offline.. "
+	exit
+fi
+
+echo -n "online.. "

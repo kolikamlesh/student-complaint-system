@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gdrive sync upload ../project 1_Pmgm3jqhYxR4SZQKRAeObZheYd0wTdc  2> /dev/null  &

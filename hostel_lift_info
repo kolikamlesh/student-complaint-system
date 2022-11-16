@@ -1,0 +1,32 @@
+#!/bin/bash
+
+lift(){
+
+	echo
+	echo "[ .. There are 4 lifts in hostel J .. ]"
+	echo
+	read -p "Enter lift number :: [1,2,3,4] :: " lift_no
+	blank lift_no lift
+
+	if [[ $lift_no -le 0 ]] || [[ $lift_no -ge 5 ]]
+	then
+		lift
+	fi
+
+}
+
+blank(){
+
+	if [ -z $1 ];
+	then
+		$2
+	fi
+}
+
+lift
+
+echo $1 > .temp
+hash=$(md5sum .temp | cut -c 1-4 )
+
+echo "LIFT-$lift_no" >> $HOME/project/db2/1/$hash/5 
+$HOME/project/remove_dup $HOME/project/db2/1/$hash/5

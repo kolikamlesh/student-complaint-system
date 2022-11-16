@@ -1,0 +1,86 @@
+#!/bin/bash
+
+register(){
+	read -p "Enter official mail ID :: " mail
+	echo
+	blank $mail register
+
+	echo $mail > .temp
+
+	md5s=$(md5sum ".temp")
+	md5=$(echo $md5s | cut -c1-6)
+
+	echo
+	echo "please wait.."
+	$HOME/project/gmail.bash $mail $md5 > .temp &
+	
+	echo
+	echo "[ PASSWORD IS SENT TO YOUR  MAIL ]"
+	echo "[ OPEN YOUR MAIL TO GET PASSWORD ]"
+	echo
+	menu
+}
+
+login(){
+	read -p "Enter official mail ID :: " mail
+	echo
+	blank $mail login
+	read -p "Enter password :: " pass
+	blank $pass login
+
+	echo $mail > .temp
+
+	md5s=$(md5sum ".temp")
+	md5=$(echo $md5s | cut -c1-6)
+
+	if [[ "$pass" == "$md5" ]]; then
+		echo
+		echo "[ authenticating.. ]"
+		$HOME/project/gmail.bash $mail "YOU ARE LOGGED IN TO STUDENT COMPLAINT PORTAL SUCCESSFULLY.." > .temp &
+		echo $mail > .auth
+	else
+		echo
+		echo "[ please check your password and try again.. ]"
+		$HOME/project/gmail.bash $mail "SOMEONE TRIED TO LOGIN IN YOUR ACCOUNT.." > .temp &
+		menu
+	fi
+}
+
+blank() {
+
+  if [ -z $1 ];
+   then
+   	$2
+   exit
+  fi
+}
+
+menu(){
+
+	if [ ! -f ".auth" ]; then
+
+		echo
+		echo "1) LOGIN"
+		echo
+		echo "2) REGISTER"
+		echo
+		#echo "3) QUIT"
+		echo
+		read -p "Choice :: " choice
+		echo
+		blank $choice
+
+		case $choice in
+			1) login ;;
+
+			2) register ;;
+
+			3) ;;
+
+			*) menu ;;
+
+		esac
+	fi
+}
+
+menu

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo $1 > .temp
+hash=$(md5sum .temp | cut -c 1-4)
+cp -r $1 $HOME/project/db2/1/$hash 2> /dev/null
+user=$(cat .auth)
+notSolved=$(cat $HOME/project/db2/1/$hash/3)
+echo $user >> $HOME/project/db2/1/$hash/4
+
+$HOME/project/remove_dup $HOME/project/db2/1/$hash/4
+
+rm .temp
+notSolved=$(($notSolved+1))
+echo $notSolved > $HOME/project/db2/1/$hash/3

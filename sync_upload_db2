@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gdrive sync upload $HOME/project/db2/1 1kKn3vtVvW_2UAus3LjyaHNYL21z8QSyw   
